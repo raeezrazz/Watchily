@@ -1,0 +1,25 @@
+/* Force black input background */
+input[type="email"],
+input[type="password"] {
+  background-color: #000 !important;   /* Black background */
+  color: #fff !important;              /* White text */
+  border: 1px solid #374151 !important; /* Gray border */
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #9ca3af !important; /* Gray placeholder */
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5) !important; /* Red glow */
+  border-color: #ef4444 !important; /* Red-500 */
+}
+
+/* Disable Chrome autofill white background */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+  -webkit-text-fill-color: #fff !important;
+}
