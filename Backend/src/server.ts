@@ -11,10 +11,22 @@ app.use(express.json());
 
 connectDB()
 
+const allowedOrigins = [
+  'https://watchily.vercel.app', // main domain
+  'https://watchily-2je98t8gm-rahees-projects-cbd8887d.vercel.app', // preview
+  'https://watchily-git-main-rahees-projects-cbd8887d.vercel.app'  // another preview
+];
 app.use(cors({
-    origin:'https://watchily-2je98t8gm-rahees-projects-cbd8887d.vercel.app/',
-    credentials:true
-  }))
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // allow Postman or server-to-server requests
+    if(allowedOrigins.includes(origin)){
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 app.use('/',router)
   
