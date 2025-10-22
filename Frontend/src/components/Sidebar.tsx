@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Video, Plus, LogOut, User,X } from "lucide-react";
+import { logout } from "../api/user";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   { title: "Videos", path: "/videos", icon: Video },
@@ -12,6 +14,21 @@ interface HeaderProps {
   }
 
 export function Sidebar({ toggleSidebar }: HeaderProps) {
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        try {
+            localStorage.removeItem("accessToken");
+    
+            localStorage.removeItem("user");
+          
+           
+          navigate("/auth"); 
+        } catch (err) {
+          console.error("Logout failed", err);
+        }
+      };
+
   return (
     <aside className="w-64 bg-black/95 backdrop-blur-md border-r border-zinc-800 flex flex-col h-screen p-4">
 
@@ -45,7 +62,7 @@ export function Sidebar({ toggleSidebar }: HeaderProps) {
       {/* ⚡ Quick Action / Logout */}
       <div className="mt-auto pt-4 border-t border-zinc-800">
         <button
-          // onClick={signOut}
+          onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2 text-red-500 hover:bg-red-600/20 rounded-lg transition-all w-full"
         >
           <LogOut className="h-5 w-5" />

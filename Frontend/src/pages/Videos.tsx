@@ -1,94 +1,125 @@
 import { useEffect, useState } from "react";
-import { PlayCircle } from "lucide-react";
-import { getAllVideos } from "../api/user";
+import { useNavigate } from "react-router-dom";
+import { Play, Plus, Trash2 } from "lucide-react";
+import { getAllVideos, } from "../api/user";
+import { Card, CardHeader, CardContent, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/Buttons";
 
 interface Video {
   _id: string;
   title: string;
   youtube_url: string;
+  created_at: string;
 }
 
 export function VideosPage() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
       setError(null);
-
       try {
         const response = await getAllVideos();
-        console.log(response,"here is the respodne")
-        setVideos(response.data.data || []); // assuming API returns { success, data: [...] }
+        setVideos(response.data.data || []);
       } catch (err: any) {
         setError(err.message || "Failed to fetch videos");
       } finally {
         setLoading(false);
       }
     };
-    console.log("first")
     fetchVideos();
-    console.log("second")
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <p className="text-gray-400">Loading videos...</p>
-      </div>
-    );
-  }
+  const getVideoThumbnail = (url: string) => {
+    try {
+      const videoIdMatch = url.match(
+        /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/
+      );
+      return videoIdMatch ? `https://img.youtube.com/vi/${videoIdMatch[1]}/hqdefault.jpg` : null;
+    } catch {
+      return null;
+    }
+  };
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
+  const deleteVideo = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this video?")) return;
+    try {
+      // await apiDeleteVideo(id);
+      setVideos((prev) => prev.filter((v) => v._id !== id));
+    } catch (err: any) {
+      alert(err.message || "Failed to delete video");
+    }
+  };
 
-  if (videos.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <p className="text-gray-400">No videos uploaded yet.</p>
-      </div>
-    );
-  }
+  if (loading) return <p className="text-gray-400 text-center mt-12">Loading videos...</p>;
+  if (error) return <p className="text-red-500 text-center mt-12">{error}</p>;
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6 text-white">My Videos</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {videos.map((video) => (
-          <div
-            key={video._id}
-            className="relative group bg-zinc-900 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-zinc-800 hover:border-red-600"
-          >
-            {/* Thumbnail: YouTube embed thumbnail */}
-            <img
-              src={`https://img.youtube.com/vi/${video.youtube_url.split("v=")[1] || "dQw4w9WgXcQ"}/hqdefault.jpg`}
-              alt={video.title}
-              className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-
-            {/* Play Overlay */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-              <PlayCircle className="h-14 w-14 text-red-500" />
-            </div>
-
-            {/* Video Info */}
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-white truncate">
-                {video.title}
-              </h2>
-              <p className="text-sm text-gray-400 mt-1">Click to play</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {videos.length === 0 ? (
+        <Card className="border-border/50 shadow-card">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Play className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No videos yet</h3>
+            <p className="text-muted-foreground mb-4">Start by adding your first video</p>
+            <Button onClick={() => navigate("/add-video")} className="bg-primary hover:bg-primary-hover">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Video
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {videos.map((video) => (
+            <Card
+              key={video._id}
+              className="border-border/50 shadow-card hover:shadow-glow transition-smooth cursor-pointer group"
+            >
+              <CardHeader className="p-0">
+                <div className="relative aspect-video overflow-hidden rounded-t-lg bg-muted">
+                  {getVideoThumbnail(video.youtube_url) ? (
+                    <img
+                      src={getVideoThumbnail(video.youtube_url) || ""}
+                      alt={video.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-smooth"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Play className="h-12 w-12 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-smooth flex items-center justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(`/video/${video._id}`)}
+                      className="bg-primary/90 hover:bg-primary border-0"
+                    >
+                      <Play className="mr-2 h-4 w-4" />
+                      Watch
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4">
+                <CardTitle className="text-lg mb-2 line-clamp-2">{video.title}</CardTitle>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    {new Date(video.createdAt).toLocaleDateString()}
+                  </span>
+                 
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

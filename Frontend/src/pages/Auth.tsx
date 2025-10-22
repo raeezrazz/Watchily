@@ -44,6 +44,7 @@ const Auth = () => {
         }
   
         alert(isLogin ? "Login successful!" : "Signup successful!");
+        navigate('/')
         // window.location.href = "/home";
       } else {
         throw new Error(response.data?.message || "Something went wrong");
