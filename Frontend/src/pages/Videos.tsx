@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Plus, Trash2 } from "lucide-react";
 import { getAllVideos, } from "../api/user";
-import { Card, CardHeader, CardContent, CardTitle } from "../components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle } from "../components/ui/Card";
 import { Button } from "../components/ui/Buttons";
 
 interface Video {

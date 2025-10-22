@@ -28,12 +28,3 @@ export const addVideo = async (formData: { title: string; youtube_url: string })
   export const getAllVideos = async () => {
     return await apiClient.get("/videos");
   };
-
-//   export const logout = async () => {
-//     localStorage.removeItem("accessToken");
-    
-//     localStorage.removeItem("user");
-  
-   
-//     return await apiClient.post("/logout"); 
-//   };

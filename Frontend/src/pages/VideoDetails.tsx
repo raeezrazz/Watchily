@@ -9,7 +9,7 @@ interface Video {
   _id: string;
   title: string;
   youtube_url: string;
-  createdAt: string;
+  created_at: string;
 }
 
 export function VideoDetailsPage() {
@@ -83,7 +83,7 @@ export function VideoDetailsPage() {
         <CardContent className="p-6">
           <CardTitle className="text-2xl mb-2">{video.title}</CardTitle>
           <p className="text-gray-400 text-sm mb-4">
-            Uploaded on: {new Date(video.createdAt).toLocaleDateString()}
+            Uploaded on: {new Date(video.created_at).toLocaleDateString()}
           </p>
 
           <p className="text-gray-400 mb-2">Original YouTube URL:</p>
