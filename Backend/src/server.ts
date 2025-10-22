@@ -12,7 +12,7 @@ app.use(express.json());
 connectDB()
 
 app.use(cors({
-    origin:'https://watchily.vercel.app/',
+    origin:'https://watchily-2je98t8gm-rahees-projects-cbd8887d.vercel.app',
     credentials:true
   }))
 
