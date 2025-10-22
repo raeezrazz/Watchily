@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Mail, Lock, Video, LogIn } from "lucide-react";
 import { Input } from "../components/ui/Input";
 import { authSchema } from "../validation/authSchema";
-import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { login , signUp } from "../api/user";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Play, Plus, Trash2 } from "lucide-react";
+import { Play, Plus } from "lucide-react";
 import { getAllVideos, } from "../api/user";
 import { Card, CardHeader, CardContent, CardTitle } from "../components/ui/Card";
 import { Button } from "../components/ui/Buttons";
@@ -45,15 +45,7 @@ export function VideosPage() {
     }
   };
 
-  const deleteVideo = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this video?")) return;
-    try {
-      // await apiDeleteVideo(id);
-      setVideos((prev) => prev.filter((v) => v._id !== id));
-    } catch (err: any) {
-      alert(err.message || "Failed to delete video");
-    }
-  };
+
 
   if (loading) return <p className="text-gray-400 text-center mt-12">Loading videos...</p>;
   if (error) return <p className="text-red-500 text-center mt-12">{error}</p>;
@@ -111,7 +103,7 @@ export function VideosPage() {
                 <CardTitle className="text-lg mb-2 line-clamp-2">{video.title}</CardTitle>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">
-                    {new Date(video.createdAt).toLocaleDateString()}
+                    {new Date(video.created_at).toLocaleDateString()}
                   </span>
                  
                 </div>

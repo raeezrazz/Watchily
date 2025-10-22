@@ -29,7 +29,7 @@ export function AddVideoPage() {
 
     try {
       // ✅ Send to backend (Axios handles JSON automatically)
-      const response = await addVideo(validation.data);
+      await addVideo(validation.data);
 
       alert("✅ Video uploaded successfully!");
       setTitle("");

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllVideos } from "../api/user";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 import { ArrowLeft } from "lucide-react";
 import { getYouTubeEmbedUrl, getYouTubeThumbnail } from "../utils/youtube";
 
