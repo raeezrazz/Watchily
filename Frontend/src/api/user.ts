@@ -21,9 +21,7 @@ export const login = async (formData:SignUpData) => {
     });
 };
 export const addVideo = async (formData: { title: string; youtube_url: string }) => {
-    return await apiClient.post("/videos/add", {
-      ...formData,
-    });
+    return await apiClient.post("/videos/add", formData);
   };
 
   

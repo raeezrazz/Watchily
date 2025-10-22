@@ -9,7 +9,7 @@ interface Video {
   _id: string;
   title: string;
   youtube_url: string;
-  created_at: string;
+  createdAt: string;
 }
 
 export function VideoDetailsPage() {
