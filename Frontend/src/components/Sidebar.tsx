@@ -1,17 +1,29 @@
 import { NavLink } from "react-router-dom";
-import { Video, Plus, LogOut, User } from "lucide-react";
+import { Video, Plus, LogOut, User,X } from "lucide-react";
 
 const menuItems = [
   { title: "Videos", path: "/videos", icon: Video },
   { title: "Add Video", path: "/add-video", icon: Plus },
 ];
 
-export function Sidebar() {
+
+interface HeaderProps {
+    toggleSidebar: () => void;
+  }
+
+export function Sidebar({ toggleSidebar }: HeaderProps) {
   return (
     <aside className="w-64 bg-black/95 backdrop-blur-md border-r border-zinc-800 flex flex-col h-screen p-4">
 
       {/* 📝 Navigation Menu */}
-      <nav className="flex-1 flex flex-col space-y-2 pt-4">
+      <button
+        onClick={toggleSidebar}
+        className="absolute top-3 right-3 p-2 rounded-full bg-zinc-900 hover:bg-red-600/30 transition-all text-gray-400 hover:text-white"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      <nav className="flex-1 flex flex-col space-y-2 pt-5">
+      
         {menuItems.map((item) => (
           <NavLink
             key={item.title}

@@ -20,20 +20,11 @@ export const login = async (formData:SignUpData) => {
         ...formData,
     });
 };
-// export  const verifyOtp =async (formData: SignUpData)=>{
-//     return await apiClient.post('/user/verifyOtp',{
-//         ...formData
-//     });
-// };
-// export const resendOtp = async (email: string) => {
-//     return await apiClient.post("/user/resendOtp", { email });
-//   };
-  
-
-// export const getUserById = async (userId?: string) => {
-//     if(userId){
-        
-//         return await apiClient.get(`/user/${userId}`);
-         
-//     }
-// }
+export const addVideo = async (formData: { title: string; youtubeLink: string }) => {
+    return await apiClient.post("/videos/add", {
+      ...formData,
+    });
+  };
+  export const getAllVideos = async () => {
+    return await apiClient.get("/videos");
+  };

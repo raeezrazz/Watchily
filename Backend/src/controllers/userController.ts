@@ -74,4 +74,34 @@ export class UserController {
       return res.status(500).json({ message: err.message });
     }
   }
+
+  async addVideo(req: Request, res: Response) {
+    try {
+      const { title, youtube_url } = req.body;
+
+      if (!title || !youtube_url) {
+        return res.status(400).json({ success: false, message: "All fields are required." });
+      }
+
+      // ✅ Delegate to service layer
+      const newVideo = await userService.addVideo({ title, youtube_url });
+
+      res.status(201).json({
+        success: true,
+        message: "Video added successfully!",
+        data: newVideo,
+      });
+    } catch (error: any) {
+      res.status(500).json({ success: false, message: error.message || "Internal server error" });
+    }
+  }
+  async getAllVideos(req: Request, res: Response) {
+    try {
+      console.log("reached in the controller")
+      const videos = await userService.getAllVideos();
+      res.status(200).json({ success: true, data: videos });
+    } catch (error: any) {
+      res.status(500).json({ success: false, message: error.message || "Internal server error" });
+    }
+  }
 }

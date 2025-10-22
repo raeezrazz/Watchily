@@ -33,7 +33,7 @@ export function MainLayout({ children }: MainLayoutProps) {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <Sidebar />
+        <Sidebar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
       </div>
 
       {/* Main content */}
