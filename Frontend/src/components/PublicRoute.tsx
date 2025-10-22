@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
+import type { ReactNode } from "react"; // ✅ type-only import
 
 interface PublicRouteProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 export function PublicRoute({ children }: PublicRouteProps) {
@@ -12,5 +13,5 @@ export function PublicRoute({ children }: PublicRouteProps) {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 }

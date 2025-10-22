@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import type { JSX } from "react"; // ✅ type-only import
 
 interface ProtectedRouteProps {
   children: JSX.Element;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Video, LogIn } from "lucide-react";
+import { Mail, Lock, Video } from "lucide-react";
 import { Input } from "../components/ui/Input";
 import { authSchema } from "../validation/authSchema";
 import { useNavigate } from "react-router-dom";
