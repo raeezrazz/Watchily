@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Mail, Lock, Video } from "lucide-react";
+import { Mail, Lock, Video, LogIn } from "lucide-react";
 import { Input } from "../components/ui/Input";
 import { authSchema } from "../validation/authSchema";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { login , signUp } from "../api/user";
+
 
 const Auth = () => {
+
+    // const dispatch = useDispatch();
+    const navigate = useNavigate()
+
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] =useState('')
   const [password, setPassword] =useState('')
@@ -11,20 +19,54 @@ const Auth = () => {
 
 
 
-  const handleSubmit =(e:any)=>{
-    e.preventDefault()
-    setLoading(true)
-
-    const formData ={
-        email,
-        password
-    };
-
-    try{
-        const parsedData = authSchema.parse(formData)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+  
+    const formData = { email, password };
+  
+    try {
+     
+      const parsedData = authSchema.parse(formData);
+  
+      const apiFn = isLogin ? login : signUp;
+      const response = await apiFn(parsedData);
+  
+      console.log("✅ Response from server:", response);
+  
+      if (response.data?.success) {
+        const { accessToken, user } = response.data.data;
+        console.log("access tocken is receiving",response.data.data)
+        
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("user", JSON.stringify(user));
+        }
+  
+        alert(isLogin ? "Login successful!" : "Signup successful!");
+        // window.location.href = "/home";
+      } else {
+        throw new Error(response.data?.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      // ✅ 6. Error handling
+      console.error("❌ Error during auth:", error);
+  
+      if (error.errors) {
+        // Zod validation error
+        alert(error.errors[0].message);
+      } else if (error.response) {
+        // API error
+        alert(error.response.data?.message || "Server error");
+      } else {
+        alert(error.message || "Unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
     }
-
-  }
+  };
+  
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black  text-white p-4">
@@ -49,7 +91,7 @@ const Auth = () => {
         {/* Form */}
         <form className="space-y-4">
           {/* Email */}
-          <div>
+          <div>         
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-300 mb-1"
