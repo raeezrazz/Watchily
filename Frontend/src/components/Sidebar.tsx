@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import { Video, Plus, LogOut, User,X } from "lucide-react";
-import { logout } from "../api/user";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [

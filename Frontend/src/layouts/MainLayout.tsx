@@ -1,5 +1,6 @@
 // MainLayout.tsx
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import{ useState }from 'react'
 import { Navigate } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";

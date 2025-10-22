@@ -16,13 +16,14 @@ export function AddVideoPage() {
     // ✅ Validate data using Zod
     const validation = videoSchema.safeParse({
       title,
-      youtube_url: youtubeLink,
+      youtube_url: youtubeLink, // <-- map your state to `youtube_url`
     });
 
     if (!validation.success) {
-      alert(validation.error.errors[0].message);
+      alert(validation.error.format().title?._errors[0] ?? "Validation failed");
       return;
     }
+    
 
     setLoading(true);
 
