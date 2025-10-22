@@ -12,13 +12,13 @@ app.use(express.json());
 connectDB()
 
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:'https://watchily.vercel.app/',
     credentials:true
   }))
 
 app.use('/',router)
   
-const PORT=process.env.PORT 
+const PORT=process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
